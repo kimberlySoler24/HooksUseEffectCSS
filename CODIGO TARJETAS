@@ -1,0 +1,115 @@
+
+//GUARDAR ESTA INFORMACION EN UN ARCHIVO .JS
+
+'use client';
+import './globals.css'
+import { useState, useEffect } from "react";
+// import Imagen from "next/image";
+
+
+export default function Principal(){
+  const [datos, ponerDatos] = useState([]);
+
+  useEffect( () => {
+
+    async function llamarApi(){
+      const peticion = await fetch("https://reqres.in/api/users?page=2"); //traer base de datos api
+      const respuesta = await peticion.json();
+      ponerDatos(respuesta.data);  // Actualizar estado
+   }
+
+   llamarApi();
+  }, []);
+  //console.log(datos);
+  return(
+    <p className='Datos-personas'>
+    {datos.map((elemento) => {
+      return <Tarjeta 
+      imagenPerfil = {elemento.avatar}
+      nombre={elemento.first_name} 
+      apellido = {elemento.last_name}
+      identificacion ={elemento.id}
+      correo ={elemento.email}
+      ></Tarjeta>
+    })}
+    </p>
+    
+  )
+}
+
+function Tarjeta(props) {
+
+  return (
+    
+    <div className='dato-cada-persona'>
+      { props.imagenPerfil ? (<img className='avatar' src={props.imagenPerfil}></img>) : (<p>Cargando...</p>)}
+      { props.identificacion ? (<p className='texto'><strong>NÚMERO DE IDENTIFICACIÓN:</strong> {props.identificacion}</p>) : (<p className='texto'>Cargando...</p>)}
+      { props.nombre && props.apellido ? (<p className='texto'><strong>NOMBRE COMPLETO:</strong> {props.nombre} {props.apellido}</p>) : (<p className='texto'>Cargando...</p>)}
+      { props.correo ? (<p className='texto'><strong>CORREO ELECTRÓNICO:</strong> {props.correo}</p>) : (<p className='texto'>Cargando...</p>)}
+    </div>
+
+  )
+}
+
+//GUARDAR ESTA INFORMACION EN UN ARCHIVO .CSS
+
+.Datos-personas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    border: 2px solid;
+    background-image: url("https://w0.peakpx.com/wallpaper/775/957/HD-wallpaper-purple-city-city-purple.jpg");
+}
+
+.avatar {
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-shadow: 10px 10px 5px 5px rgba(166,109,166,1);
+    -moz-box-shadow: 10px 10px 5px 5px rgba(166,109,166,1);
+    box-shadow: 10px 10px 5px 5px rgba(166,109,166,1);
+    opacity: 1;
+}
+
+.dato-cada-persona {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px solid;
+    background-color: rgb(164, 164, 238);
+    margin: 10px;
+    -webkit-box-shadow: 10px 10px 5px 5px rgba(245, 152, 245, 1);
+    -moz-box-shadow: 10px 10px 5px 5px rgba(245, 152, 245, 1);
+    box-shadow: 10px 10px 5px 5px rgba(245, 152, 245, 1);
+    width: 500px;
+    height: 250px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.texto{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    text-align: justify;
+    margin: 10px;
+    font-size: large;
+    font-family: 'Times New Roman', Times, serif;
+    opacity: 1;
+}
+
+div{
+    opacity: .8;
+}
+
